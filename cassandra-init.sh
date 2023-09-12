@@ -1,11 +1,11 @@
 cat >/import.cql <<EOF
 DROP keyspace off;
-CREATE KEYSPACE off
+CREATE KEYSPACE IF NOT EXISTS off
 WITH REPLICATION = {'class' : 'SimpleStrategy', 'replication_factor' : 1};
 
 USE off;
 
-CREATE TABLE food (
+CREATE TABLE IF NOT EXISTS food (
     "code" varchar primary key,
     "url" varchar,
     "creator" varchar,

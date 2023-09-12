@@ -7,7 +7,6 @@ kmeans:
 data:
   data: "data/en.openfoodfacts.org.products.csv"
   columns: "configs/columns.json"
-  size: 10000
 
 spark:
   app_name: "clusteroff"

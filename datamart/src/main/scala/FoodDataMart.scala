@@ -3,7 +3,7 @@ import org.apache.spark.ml.feature.{StandardScaler, VectorAssembler}
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.col
 
-class FoodDataMart(sparkConfig: SparkConfig, dbConfig: DbConfig, val limit: Int) {
+class FoodDataMart(sparkConfig: SparkConfig, dbConfig: DbConfig) {
   private val FEATURES_COLUMN = "scaled_features"
   private val COLUMNS = Map(
     "id" -> Array("code", "product_name"),
@@ -36,13 +36,11 @@ class FoodDataMart(sparkConfig: SparkConfig, dbConfig: DbConfig, val limit: Int)
 
     val allColumns = idColumns.map(col) ++ featureColumns ++ catColumns.map(col)
     val dfWithSelectedColumns = df.select(allColumns: _*)
-    val dfWithoutNull = dfWithSelectedColumns.na.drop()
-    val limited = dfWithoutNull.limit(limit)
 
     val vac_assembler = new VectorAssembler()
       .setInputCols(featureColumnNames)
       .setOutputCol("features")
-    val dfWithFeatures = vac_assembler.transform(limited)
+    val dfWithFeatures = vac_assembler.transform(dfWithSelectedColumns)
 
     val scaler = new StandardScaler().setInputCol("features").setOutputCol(FEATURES_COLUMN)
     val scalerModel = scaler.fit(dfWithFeatures)

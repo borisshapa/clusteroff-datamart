@@ -17,7 +17,7 @@ class DataMart:
             config.spark.executor_cores,
             config.spark.driver_cores,
         )
-        self.datamart = sc._jvm.FoodDataMart(spark_config, db_config, config.data.size)
+        self.datamart = sc._jvm.FoodDataMart(spark_config, db_config)
 
     def get_food(self) -> pyspark.sql.DataFrame:
         jdf = self.datamart.getFood()
