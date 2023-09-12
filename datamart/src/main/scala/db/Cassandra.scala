@@ -27,6 +27,7 @@ class Cassandra(config: SparkConfig, val dbConfig: DbConfig) extends Database {
     .config("spark.executor.memory", config.executorMemory)
     .config("spark.cassandra.connection.host", "cassandra")
     .config("spark.cassandra.connection.port", "9042")
+    .config("spark.jars", "/opt/spark/jars/spark-cassandra-connector.jar")
     .getOrCreate()
 
   override def getData(): DataFrame = {
